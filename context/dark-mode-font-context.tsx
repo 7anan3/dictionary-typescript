@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 
-const DarkModeFontContext = createContext<{
+export const DarkModeFontContext = createContext<{
   isDarkMode: boolean;
   setIsDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
   selectedFont: string;
