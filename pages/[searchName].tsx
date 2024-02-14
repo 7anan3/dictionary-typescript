@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Fragment } from "react";
 import { useState } from "react";
 import { useDarkModeFont } from "@/context/dark-mode-font-context";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 
 interface Phonetic {
   audio: string;
@@ -35,7 +36,9 @@ interface SearchNameProps {
   word: WordData | null;
 }
 
-export default function SearchName({ word }: SearchNameProps) {
+export default function SearchName({
+  word,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { isDarkMode, selectedFont } = useDarkModeFont();
   const [audioPlaying, setAudioPlaying] = useState(false);
 
@@ -103,7 +106,7 @@ export default function SearchName({ word }: SearchNameProps) {
         ) : (
           <div className="flex justify-center items-center h-screen px-5">
             <p className="text-royal-purple text-xl text-center ">
-              This word doesn&apos;t exist, please try another word!!!!!
+              This word doesn&apos;t exist, please try another word.
             </p>
           </div>
         )}
@@ -164,7 +167,9 @@ export default function SearchName({ word }: SearchNameProps) {
   );
 }
 
-export async function getServerSideProps(context) {
+export const getServerSideProps: GetServerSideProps<{
+  word: WordData | null;
+}> = async (context) => {
   const { searchName } = context.query;
   try {
     const response = await fetch(
@@ -197,4 +202,4 @@ export async function getServerSideProps(context) {
       },
     };
   }
-}
+};
